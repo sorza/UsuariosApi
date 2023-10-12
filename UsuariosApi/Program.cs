@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using UsuariosApi.Authorization;
 using UsuariosApi.Data;
 using UsuariosApi.Models;
@@ -38,6 +41,23 @@ namespace UsuariosApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey
+                    (Encoding.UTF8.GetBytes("OIAS8230423J4JWEORJWE694oijsdfi935")),
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ClockSkew = TimeSpan.Zero
+            };
+            });
+
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("IdadeMinima", policy =>                
@@ -55,7 +75,7 @@ namespace UsuariosApi
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
