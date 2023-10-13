@@ -19,7 +19,7 @@ namespace UsuariosApi
 
             // Add services to the container.
 
-            var connString = builder.Configuration.GetConnectionString("UsuarioConnection");
+            var connString = builder.Configuration["ConnectionStrings:UsuarioConnection"];
             builder.Services.AddDbContext<UsuarioDbContext>(opts =>
             {
                 opts.UseMySql(connString, ServerVersion.AutoDetect(connString));
@@ -51,7 +51,7 @@ namespace UsuariosApi
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey
-                    (Encoding.UTF8.GetBytes("OIAS8230423J4JWEORJWE694oijsdfi935")),
+                    (Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
                     ValidateAudience = false,
                     ValidateIssuer = false,
                     ClockSkew = TimeSpan.Zero
