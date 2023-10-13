@@ -1,5 +1,3 @@
-USUARIO API
-
 Uma API de usuários que controla acesso e autorizações utilizando Identity
 
 - Políticas de Autorização, utilizando Validation
